@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lingnan Kong — AI Product Design & Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F3;
+    --bg2: #F3EFE7;
+    --ink: #1C1814;
+    --ink2: #5A5550;
+    --ink3: #A09890;
+    --rust: #B05C38;
+    --rust-light: #F0E6DF;
+    --rust-mid: #D4886A;
+    --border: #E4DDD4;
+    --border2: #D0C8BC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,248,243,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 52px;
+    height: 52px;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo em { font-style: italic; color: var(--rust); }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ink3);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--rust); }
+
+  /* HERO */
+  #home {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0 52px;
+    padding-top: 52px;
+    border-bottom: 0.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 64px;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.2s;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 0.5px;
+    background: var(--rust);
+    display: block;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(80px, 13vw, 180px);
+    font-weight: 300;
+    line-height: 0.88;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.35s;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--rust);
+  }
+  .hero-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 60px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.55s;
+  }
+  .hero-bio {
+    max-width: 480px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink2);
+    font-weight: 300;
+  }
+  .hero-meta {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: right;
+  }
+  .hero-meta-item { }
+  .hero-meta-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .hero-meta-val {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .hero-bg-text {
+    position: absolute;
+    bottom: -40px;
+    right: -30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40vw;
+    font-weight: 300;
+    color: rgba(176, 92, 56, 0.04);
+    line-height: 1;
+    pointer-events: none;
+    font-style: italic;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 96px 52px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .about-headline em {
+    font-style: italic;
+    color: var(--rust);
+  }
+  .about-text {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.85;
+    margin-bottom: 24px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 40px;
+    background: var(--border);
+  }
+  .skill-item {
+    padding: 18px 20px;
+    background: var(--bg);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    color: var(--ink);
+    transition: background 0.2s;
+  }
+  .skill-item:hover { background: var(--rust-light); }
+  .skill-num {
+    display: block;
+    font-size: 9px;
+    color: var(--rust);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  /* PROJECTS */
+  .projects-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .projects-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .projects-count {
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 1px;
+  }
+  .category-divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 0 8px;
+  }
+  .category-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rust);
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .category-line { flex: 1; height: 0.5px; background: var(--border); }
+  .category-sub {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--ink3);
+    white-space: nowrap;
+  }
+  .category-label.blue { color: #6B8CAE; }
+
+  /* PROJECT CARD */
+  .project-card {
+    display: grid;
+    grid-template-columns: 72px 1fr 140px;
+    gap: 36px;
+    align-items: start;
+    padding: 44px 0;
+    border-top: 0.5px solid var(--border);
+    transition: background 0.15s;
+  }
+  .project-card:hover { background: transparent; }
+  .project-card:hover .project-title { color: var(--rust); }
+  .project-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--border2);
+    font-style: italic;
+    padding-top: 6px;
+  }
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 0.5px solid var(--border2);
+    color: var(--ink3);
+    font-weight: 400;
+  }
+  .tag.rust {
+    border-color: var(--rust);
+    color: var(--rust);
+    background: var(--rust-light);
+  }
+  .tag.blue {
+    border-color: #6B8CAE;
+    color: #6B8CAE;
+    background: rgba(107,140,174,0.06);
+  }
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 6px;
+    transition: color 0.2s;
+  }
+  .project-company {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.85;
+    max-width: 600px;
+    margin-bottom: 0;
+  }
+
+  /* CONTRIBUTION BLOCK */
+  .contrib-block {
+    margin-top: 20px;
+    padding: 18px 20px;
+    border-left: 1.5px solid #6B8CAE;
+    background: rgba(107,140,174,0.04);
+  }
+  .block-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #6B8CAE;
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  .contrib-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .contrib-list li {
+    font-size: 13px;
+    color: var(--ink2);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.7;
+  }
+  .contrib-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #6B8CAE;
+  }
+  .contrib-list li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* REFLECTION BLOCK */
+  .reflection-block {
+    margin-top: 14px;
+    padding: 18px 20px;
+    border-left: 1.5px solid var(--rust-mid);
+    background: var(--rust-light);
+  }
+  .reflection-block .block-label { color: var(--rust); }
+  .reflection-text {
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.85;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  /* METRICS */
+  .project-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 10px;
+  }
+  .metric { text-align: right; }
+  .metric-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--rust);
+    font-style: italic;
+  }
+  .metric-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .metric-divider {
+    width: 100%;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* STATEMENT */
+  .statement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .statement-large {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 3.5vw, 44px);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .statement-large em { color: var(--rust); font-style: italic; }
+  .statement-detail p {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.85;
+    margin-bottom: 18px;
+    border-left: 1.5px solid var(--border2);
+    padding-left: 16px;
+  }
+  .statement-detail p strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg2);
+  }
+  .footer-left { }
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+  }
+  .footer-name em { font-style: italic; color: var(--rust); }
+  .footer-tagline {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-top: 6px;
+  }
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: right;
+  }
+  .footer-contact a {
+    font-size: 13px;
+    color: var(--ink3);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .footer-contact a:hover { color: var(--rust); }
+  .footer-copy {
+    font-size: 11px;
+    color: var(--border2);
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 16px 52px;
+    background: var(--bg2);
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* IMAGE GALLERIES */
+  .img-gallery { margin: 24px 0; }
+  .img-gallery-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  .img-row {
+    display: grid;
+    gap: 8px;
+  }
+  .img-row.cols-1 { grid-template-columns: 1fr; }
+  .img-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .img-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .img-row.cols-2-1 { grid-template-columns: 2fr 1fr; }
+  .img-row + .img-row { margin-top: 8px; }
+  .img-frame {
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    background: var(--bg2);
+  }
+  .img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .img-frame:hover img { transform: scale(1.02); }
+  .img-frame.h-200 { height: 200px; }
+  .img-frame.h-160 { height: 160px; }
+  .img-frame.h-240 { height: 240px; }
+  .img-frame.h-280 { height: 280px; }
+  .img-caption {
+    font-size: 10px;
+    color: var(--ink3);
+    padding: 6px 10px;
+    border-top: 0.5px solid var(--border);
+    background: var(--bg);
+    letter-spacing: 0.3px;
+  }
+
+  /* WIP tag */
+  .wip-note {
+    font-size: 12px;
+    color: var(--ink3);
+    font-style: italic;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home"><em>Portfolio</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Professional</a></li>
+    <li><a href="#academic">Academic</a></li>
+    <li><a href="#statement">Statement</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg-text">K</div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">AI Product Design & Management</p>
+    <h1 class="hero-name">KK<br><em>Kong</em></h1>
+    <div class="hero-bottom">
+      <p class="hero-bio">
+        I spent five years shipping AI products at scale across China's leading internet platforms, then chose to step back and study why some of them worked, and why some didn't. That deliberate inversion (practitioner before theorist) is how I approach every problem I touch.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Field</span>
+          <span class="hero-meta-val">AI Product Design & Management</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Target Role</span>
+          <span class="hero-meta-val">Senior Product Manager</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Based</span>
+          <span class="hero-meta-val">Australia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">01 — About</p>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-headline">
+        Industry first.<br><em>Design</em> second.<br>By choice.
+      </h2>
+    </div>
+    <div>
+      <p class="about-text">
+        Most designers study first, then enter the industry. I did it the other way around, deliberately. After five years as an AI Product Manager at iQIYI and DiDi, I chose to return to postgraduate study at the University of Sydney, not to start a career in design, but to interrogate the one I had already built. During my studies, I joined Baidu's Yike Album team as an intern, bringing design methods back into real product contexts.
+      </p>
+      <p class="about-text">
+        That sequence gives me something rare: the practitioner's instinct for what actually ships, layered with the design thinker's ability to ask whether it should. I bring proven delivery at scale, real cross-functional leadership, and a current, research-informed perspective on AI interaction, all at once.
+      </p>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <span class="skill-num">i.</span>
+          AI Product Strategy
+        </div>
+        <div class="skill-item">
+          <span class="skill-num">ii.</span>
+          Data-Driven Decision Making
+        </div>
+        <div class="skill-item">
+          <span class="skill-num">iii.</span>
+          Multimodal & AIGC Design
+        </div>
+        <div class="skill-item">
+          <span class="skill-num">iv.</span>
+          Cross-Team Collaboration
+        </div>
+        <div class="skill-item" style="grid-column: 1 / -1;">
+          <span class="skill-num">v.</span>
+          User Research & Interaction Design
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">02 — Selected Projects</p>
+  <div class="projects-header">
+    <h2 class="projects-title">Work</h2>
+    <span class="projects-count">6 projects · 2018–present</span>
+  </div>
+
+  <!-- CATEGORY: PROFESSIONAL -->
+  <div class="category-divider">
+    <span class="category-label">Professional Work</span>
+    <div class="category-line"></div>
+    <span class="category-sub">Baidu · DiDi · iQIYI</span>
+  </div>
+
+  <!-- PROJECT 01 -->
+  <div class="project-card">
+    <div class="project-num">01</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag rust">AI Product</span>
+        <span class="tag rust">Postgrad Internship</span>
+        <span class="tag">2025.12 – 2026.03</span>
+      </div>
+      <h3 class="project-title">Baidu Yike Album — AI Feature Design</h3>
+      <p class="project-company">Baidu · Product Manager Intern</p>
+      <p class="project-desc">
+        Designed a suite of six generative AI features for Baidu's flagship photo product: one-tap AI retouching, AI portrait generation, beat-sync video, creative collage, intelligent auto-captioning, and AI background replacement. Each feature required deep collaboration with algorithm engineers to balance model capability with consumer-facing experience.
+      </p>
+      <div class="img-gallery">
+        <p class="img-gallery-label">Product Visuals</p>
+        <div class="img-row cols-1">
+          <div class="img-frame h-200">
+            <img src="baidu-1.png" alt="Yike Album feature showcase">
+            <p class="img-caption">Yike Album — core product features including AI classification, smart search, and sharing</p>
+          </div>
+        </div>
+        <div class="img-row cols-2" style="margin-top:8px;">
+          <div class="img-frame h-200">
+            <img src="baidu-2.jpg" alt="Yike Album AI features screen" style="object-position: top;">
+            <p class="img-caption">AI creation hub — AI portrait, beat-sync video, creative collage</p>
+          </div>
+          <div class="img-frame h-200">
+            <img src="baidu-3.jpg" alt="Yike Album splash screen" style="object-position: center;">
+            <p class="img-caption">Yike Album splash — "See Every Moment"</p>
+          </div>
+        </div>
+      </div>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Sole product intern responsible for full feature lifecycle: user research, competitive analysis, PRD writing, and engineering handoff</li>
+          <li>Conducted user interviews to identify core needs, then aligned each feature's scope with the algorithm team's model capability boundary</li>
+          <li>All 6 feature specs passed review and entered development; AI portrait and one-tap retouching listed as core Q1 launches</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          This was my first time designing consumer-facing AI features where users directly judge the model with every tap. At DiDi, models operated invisibly inside risk systems; users never saw them. At Baidu, a single unsatisfying result is attributed to the product, not the model. The algorithm team measured success in precision and recall; I kept pulling the conversation back to whether users would come back. That tension surfaced in every review meeting. Over time I came to see it as a healthy friction: my value in an AI team is being the translator between model capability and user expectation.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">6</div>
+        <div class="metric-label">AI features designed</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">Gen<br>AI</div>
+        <div class="metric-label">Core technology</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 02 -->
+  <div class="project-card">
+    <div class="project-num">02</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag rust">AI Safety</span>
+        <span class="tag rust">Risk Strategy</span>
+        <span class="tag">2020.09 – 2023.04</span>
+      </div>
+      <h3 class="project-title">DiDi — AI In-Car Safety Strategy Product</h3>
+      <p class="project-company">DiDi Chuxing · AI Product Manager</p>
+      <p class="project-desc">
+        Led end-to-end design and deployment of an AI-powered in-car safety system serving tens of millions of daily trips. Built a full-cycle risk framework spanning pre-trip identification, in-trip intervention, and post-trip resolution, coordinating 20+ NLP and computer vision models to detect verbal harassment, violence, and assault.
+      </p>
+      <div class="img-gallery">
+        <p class="img-gallery-label">Product Context</p>
+        <div class="img-row cols-1">
+          <div class="img-frame h-200">
+            <img src="didi-2.png" alt="DiDi Safety page" style="object-position: top;">
+            <p class="img-caption">DiDi Safety — rider safety features powered by the system I designed</p>
+          </div>
+        </div>
+        <div class="img-row cols-2" style="margin-top:8px;">
+          <div class="img-frame h-160">
+            <img src="didi-1.png" alt="DiDi platform" style="object-position: top;">
+            <p class="img-caption">DiDi global platform — tens of millions of daily trips</p>
+          </div>
+          <div class="img-frame h-160">
+            <img src="didi-3.png" alt="DiDi safety features grid" style="object-position: top;">
+            <p class="img-caption">Safety feature system including TripCheck, facial verification, and SOS</p>
+          </div>
+        </div>
+      </div>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Sole AI PM on the project, responsible for full system design and final business metrics</li>
+          <li>Extracted risk features via SQL analysis, collaborated with algorithm team to deploy 20+ NLP and vision models</li>
+          <li>Designed the "pre-identify, in-trip intervene, post-trip resolve" strategy framework end-to-end</li>
+          <li>Independently designed the case review platform: permission architecture, data visualisation, and audit workflow</li>
+          <li><strong>Results:</strong> 100+ incidents reduced daily / serious assault rate down 58% / proactive case detection up 125% / review efficiency up 65% / 6M CNY saved annually</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          The three years I spent on safety products at DiDi were the most morally weighted of my career. A missed detection could mean a real assault going unnoticed. An over-trigger could unfairly penalise an innocent driver. This tension generated real disagreement within the team: the algorithm team wanted higher recall, operations worried about false-positive complaints, and I sat in the middle making decisions nobody was fully happy with. I came to understand that in this context, the product manager's role is not to find an answer everyone accepts, but to help the team make a judgement they can stand behind. That lesson shaped how I think about responsible design in complex systems.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">125%</div>
+        <div class="metric-label">More cases detected</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">58%</div>
+        <div class="metric-label">Reduction in serious incidents</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">20+</div>
+        <div class="metric-label">AI models deployed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 03 -->
+  <div class="project-card">
+    <div class="project-num">03</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag rust">UX Strategy</span>
+        <span class="tag rust">A/B Testing</span>
+        <span class="tag">2018.07 – 2020.08</span>
+      </div>
+      <h3 class="project-title">iQIYI — Video Platform Redesign & Short Video</h3>
+      <p class="project-company">iQIYI · Product Manager</p>
+      <p class="project-desc">
+        Led two major redesigns of iQIYI's core playback page serving 9 million daily active users, the design of an infinite short-video feed, and an interactive variety-show voting feature, rebuilding the content consumption journey from the ground up through behavioural data, A/B testing, and cross-functional delivery.
+      </p>
+      <div class="img-gallery">
+        <p class="img-gallery-label">Product Visuals</p>
+        <div class="img-row cols-1">
+          <div class="img-frame h-240">
+            <img src="iqiyi-2.png" alt="iQIYI homepage hero" style="object-position: top;">
+            <p class="img-caption">iQIYI homepage — content discovery experience I helped redesign</p>
+          </div>
+        </div>
+        <div class="img-row cols-3" style="margin-top:8px;">
+          <div class="img-frame h-160">
+            <img src="iqiyi-1.png" alt="iQIYI content grid" style="object-position: top;">
+            <p class="img-caption">Content grid — differentiated layouts by type</p>
+          </div>
+          <div class="img-frame h-160">
+            <img src="iqiyi-3.png" alt="iQIYI video detail page" style="object-position: top;">
+            <p class="img-caption">Video detail — episode list and playback UI</p>
+          </div>
+          <div class="img-frame h-160">
+            <img src="iqiyi-4.png" alt="iQIYI playback page" style="object-position: top;">
+            <p class="img-caption">Playback page — redesigned consumption flow</p>
+          </div>
+        </div>
+      </div>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Led two full redesign cycles, the short-video feed, and the voting feature from concept through live launch</li>
+          <li>Analysed click-through rates, watch time and scroll paths for 9M DAU, designing differentiated layouts by content type</li>
+          <li>Drove standardised cross-team delivery across operations, design, and engineering</li>
+          <li>Designed the voting feature's operator configuration system, enabling cross-content deployment with 60% faster dev cycles</li>
+          <li><strong>Results:</strong> VV per user +10% / retention +2.5% / short-video watch time +95% / voting login rate 83% (platform high)</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          iQIYI's deepest lesson for me was the danger of intuition. I arrived with strong instincts about what to build, and the first A/B test came back pointing the exact opposite direction. That experience planted a permanent scepticism toward my own certainty. But the harder lesson came through cross-team work: operations wanted more exposure slots, design held for visual restraint, engineering pushed back on timeline. What I learned was not how to persuade everyone, but how to find the smallest testable version in the space of disagreement and let data carry the argument. That instinct (run it first, argue after) became the foundation of how I work.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">9M</div>
+        <div class="metric-label">Daily active users</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">95%</div>
+        <div class="metric-label">Short-video watch time uplift</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">83%</div>
+        <div class="metric-label">Voting feature login rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY: ACADEMIC -->
+  <div id="academic" class="category-divider" style="margin-top: 60px;">
+    <span class="category-label blue">Academic Projects</span>
+    <div class="category-line"></div>
+    <span class="category-sub">University of Sydney · MDES / MIDEA</span>
+  </div>
+
+  <!-- PROJECT 04 -->
+  <div class="project-card">
+    <div class="project-num">04</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag blue">Current Unit · IDEA9301</span>
+        <span class="tag blue">In Progress</span>
+        <span class="tag">2025 – Present</span>
+      </div>
+      <h3 class="project-title">BridgeClass — In-Class Comprehension Support for Non-Native Design Students</h3>
+      <p class="project-company">University of Sydney · IDEA9301 / DESN9201 · Client: Design@Sydney</p>
+      <p class="project-desc">
+        Designing a three-phase digital support system addressing comprehension barriers faced by international students in fast-paced design tutorials. The system spans the full learning cycle: pre-class concept and terminology preparation, in-class real-time key-point tracking and task clarification (the core phase), and post-class knowledge mapping and self-assessment. <span class="wip-note">Work in progress: concept validated, currently in prototype and early testing.</span>
+      </p>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; margin: 20px 0; background: var(--border);">
+        <div style="padding:14px 16px; background:var(--bg);">
+          <p style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:6px;">Pre-Class</p>
+          <p style="font-size:13px; color:var(--ink); font-weight:400; margin-bottom:6px;">Preparation</p>
+          <p style="font-size:12px; color:var(--ink3); line-height:1.6;">Background knowledge, key concepts, design terminology</p>
+        </div>
+        <div style="padding:14px 16px; background:var(--rust-light); border-left: 2px solid var(--rust);">
+          <p style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--rust); margin-bottom:6px;">In-Class · Core</p>
+          <p style="font-size:13px; color:var(--ink); font-weight:400; margin-bottom:6px;">Real-time Comprehension</p>
+          <p style="font-size:12px; color:var(--ink3); line-height:1.6;">Key-point visualisation, task clarification, live support</p>
+        </div>
+        <div style="padding:14px 16px; background:var(--bg);">
+          <p style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:6px;">Post-Class</p>
+          <p style="font-size:13px; color:var(--ink); font-weight:400; margin-bottom:6px;">Review & Feedback</p>
+          <p style="font-size:12px; color:var(--ink3); line-height:1.6;">Knowledge maps, self-assessment, gap consolidation</p>
+        </div>
+      </div>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Conducted semi-structured interviews with MDES/MIDEA international students to locate the densest comprehension breakpoints</li>
+          <li>Independently designed the three-phase system architecture based on the Universal Design for Learning (UDL) framework</li>
+          <li>Completed Figma interaction prototypes for core modules and ran early usability tests</li>
+          <li><strong>Results:</strong> Early test participants reported noticeably reduced in-class comprehension anxiety. Concept validated. Iteration ongoing.</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          I am the target user of this project. I have sat in a design tutorial, understood every word, and still not known what I was supposed to do. That experience is personal in a way that most product problems are not. Bringing that lived context into user research demanded a discipline I had not needed before: the ability to hold "I understand your situation" and "I must not assume you share my situation" simultaneously. Interviews surfaced experiences entirely unlike mine. This is still the hardest design tension I have worked with. The project is unfinished, and increasingly I think that incompleteness is instructive. Good strategic design resists the urge to close prematurely on solutions.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">3</div>
+        <div class="metric-label">Learning phases</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">UDL</div>
+        <div class="metric-label">Framework applied</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">CALD</div>
+        <div class="metric-label">Target users</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 05 -->
+  <div class="project-card">
+    <div class="project-num">05</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag blue">Computer Vision</span>
+        <span class="tag blue">LLM</span>
+        <span class="tag rust">Personal Project</span>
+        <span class="tag">2025.07 – Present</span>
+      </div>
+      <h3 class="project-title">Focus Monitor — AI Attention Tracking Product</h3>
+      <p class="project-company">Personal Project · Launching on App Store</p>
+      <p class="project-desc">
+        An independently designed real-time focus-monitoring product using computer vision to infer student attention from eye movement and head posture, paired with a fine-tuned Qwen-2.5-7B LLM delivering personalised study advice through natural dialogue. The system outputs visualised attention reports to help students identify fluctuation points and improve learning quality.
+      </p>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Sole designer and product lead, responsible for user research, product definition, interaction design, and model strategy</li>
+          <li>Decomposed attention into 4 key visual signals with weighted scoring to build a quantifiable attention index</li>
+          <li>Designed SFT data fine-tuning strategy for Qwen-2.5-7B and LLM-as-a-Judge evaluation methodology</li>
+          <li>Completed Figma interaction design for live monitoring, dialogue, and data visualisation modules</li>
+          <li><strong>Results:</strong> Full prototype and model strategy docs complete. Submitting to App Store for review.</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          This is the first product I am taking to market entirely alone. Without a team, uncertainty cannot be distributed through division of labour; every decision sits with one person. That is uncomfortable in a productive way. It also brought into sharp focus a question I rarely had to answer seriously in corporate environments: is it ethical to continuously monitor someone's behaviour, even if the purpose is to help them? I have no clean answer. But I believe that a designer who has not wrestled seriously with this question should not build this kind of product. Preparing to launch has turned an abstract ethical concern into a concrete design decision I have to make and own.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">CV</div>
+        <div class="metric-label">Vision AI</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">LLM</div>
+        <div class="metric-label">Qwen-2.5-7B</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">App<br>Store</div>
+        <div class="metric-label">Launching soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 06 -->
+  <div class="project-card">
+    <div class="project-num">06</div>
+    <div>
+      <div class="project-tags">
+        <span class="tag blue">AIGC</span>
+        <span class="tag blue">Prompt Engineering</span>
+        <span class="tag rust">Personal Project</span>
+        <span class="tag">2025.03 – 2025.07</span>
+      </div>
+      <h3 class="project-title">Multimodal Virtual Store Experience System</h3>
+      <p class="project-company">Personal Project</p>
+      <p class="project-desc">
+        Independently designed and built a reusable AI content-production workflow for immersive virtual brand storytelling, integrating MidJourney, Runway, ChatGPT, and CapCut into a coherent end-to-end pipeline. Developed a structured cross-model prompt engineering framework enabling consistent, high-quality video output through brand variable substitution.
+      </p>
+      <div class="contrib-block">
+        <p class="block-label">My Contribution</p>
+        <ul class="contrib-list">
+          <li>Built the MidJourney → Runway → ChatGPT → CapCut production workflow from scratch</li>
+          <li>Developed structured prompt engineering system (variable templates, style-locking, scene-alignment) to ensure cross-model consistency</li>
+          <li>Sole author of the brand visual system and narrative script, ensuring image, video and copy cohered aesthetically and tonally</li>
+          <li>Applied LLM-as-a-Judge methodology to evaluate output quality; produced reusable prompt template library</li>
+        </ul>
+      </div>
+      <div class="reflection-block">
+        <p class="block-label">Reflection</p>
+        <p class="reflection-text">
+          Working as a creator rather than a product manager was a genuine identity shift. I am trained to validate decisions with data, but there is no clean metric for whether a visual tone is right. Working alone meant there was no team consensus to fall back on, no second opinion to absorb uncertainty. I had to develop a sense of aesthetic judgement as a professional skill, not a side effect of data analysis. Building the workflow also gave me a new understanding of what good system design means: not just making something run, but making something that people with different backgrounds can reliably reproduce. That insight later shaped how I think about the BridgeClass architecture.
+        </p>
+      </div>
+    </div>
+    <div class="project-metrics">
+      <div class="metric">
+        <div class="metric-value">4</div>
+        <div class="metric-label">AI tools integrated</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric">
+        <div class="metric-value">Solo</div>
+        <div class="metric-label">Independent work</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section id="statement">
+  <p class="section-label">03 — Professional Statement</p>
+  <div class="statement-grid">
+    <div>
+      <p class="statement-large">
+        I didn't study design<br>then find the industry.<br>I <em>mastered</em> the industry,<br>then went back to<br>study design.
+      </p>
+    </div>
+    <div class="statement-detail">
+      <p><strong>Field of Practice</strong>AI Product Design & Management, specialising in AI product strategy, multimodal interaction, and design for complex systems at scale.</p>
+      <p><strong>Target Role</strong>Senior Product Manager at a large internet company or meaningful startup role spanning strategy and execution, shaping how AI products are conceived, not just built.</p>
+      <p><strong>What makes me different</strong>Five years of industry delivery before returning to academia is not a career gap. I understand production constraints, business trade-offs, and cross-functional politics because I have lived them. My design education adds a critical layer on top of that foundation, not in place of it.</p>
+      <p><strong>What I am looking for</strong>Partners and leaders who value the combination of proven execution and rigorous design thinking. Organisations building AI products that must work for real people, not just in demos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-left">
+    <div class="footer-name">Lingnan <em>Kong</em></div>
+    <div class="footer-tagline">Lingnan Kong (KK) · 孔令楠 · AI Product Design & Management · Australia</div>
+  </div>
+  <div class="footer-contact">
+    <a href="mailto:konglingnankk@163.com">konglingnankk@163.com</a>
+    <a href="tel:+61439319871">+61 439 319 871</a>
+    <a href="tel:+8618510148436">+86 185 1014 8436</a>
+  </div>
+</footer>
+<p class="footer-copy">© 2026 Lingnan Kong · Portfolio · University of Sydney Master of Interaction Design</p>
+
+</body>
+</html>
